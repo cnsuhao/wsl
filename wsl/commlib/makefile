@@ -10,7 +10,7 @@ CXXFLAGS = -fPIC -Wall -D_GNU_SOURCE  -g -DLINUX
 LD = g++
 LDFLAGS = -shared
 
-INCDIR=	  -I./ \
+INCDIR=	  -I./  -I ../include/
 
           
 LIBS =	
