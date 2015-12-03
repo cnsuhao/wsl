@@ -16,7 +16,7 @@ INCDIR=	  -I./  -I ../include/
 LIBS =	
 
 #需要输出的文件名
-TARGET = tree_server
+TARGET = wsl
 
 #取当前目录下的所有文件	      
 OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
@@ -34,7 +34,7 @@ LIBSO=$(TARGET).so
 BIN=$(TARGET)
 
 #需要输出的文件类型
-TARGETS= $(BIN)
+TARGETS= $(LIBA)
 
 #三种文件的编码方式
 CREATESO = $(LD)  $(LDFLAGS) -o $@ $^ $(LIBS)
