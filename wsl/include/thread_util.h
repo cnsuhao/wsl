@@ -142,6 +142,27 @@ public:
 
 };
 
+template<typename T,typename LockT,typename HashT = wsl::hash<T>,typename SequenceT = std::vector<LockT*> >
+class LockPoolLocker
+{
+	typedef typename SequenceT::size_type size_type;
+public:
+	typedef LockPool<T,LockT,HashT,SequenceT> LockPoolT;
+	explicit LockPoolLocker(LockPoolT& lp,const T& o)
+		:_lp(lp),_hash(lp.Hasher()(o))
+	{
+		_lp.LockH(_hash);
+	}
+	~LockPoolLocker()
+	{
+		_lp.UnLockH(_hash);
+	}
+
+private:
+	LockPoolT& _lp;
+	size_type _hash;
+};
+
 }
 
 
