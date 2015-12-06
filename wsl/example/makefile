@@ -1,60 +1,21 @@
-OS = linux
-RM = /bin/rm -f
-#编译.c文件的选项
 CC = gcc 
-CFLAGS =  -Wall -g -fPIC -D_GNU_SOURCE -DLINUX
-#编译cpp文件的选项
-CXX = g++
-CXXFLAGS = -fPIC -Wall -D_GNU_SOURCE  -g -DLINUX 
-#编译so的选项
-LD = g++
-LDFLAGS = -shared
+CXX = g++ 
+CFLAGS = -g -Wall -O0
 
-INCDIR=	  -I./ \
+INCLUDE	:= -I./ -I../include
 
-          
-LIBS =	
+EXES = $(shell ls *.cpp | awk -F. '{print $$1}')
+all : $(EXES)
+LIBS = -lpthread -lexpat -lz
 
-#需要输出的文件名
-TARGET = tree_server
+.%.d: %.cpp
+	$(CC) $(INCLUDE) -MM $< > $@
+	@$(CC) $(INCLUDE) -MM $< | sed s/"^\. "/" "/  |sed s/"\.o"/""/ > $@
+	@echo '$^' | awk -F. '{print "	$(CXX) $(CFLAGS) $(INCLUDE) -o "$$1" $^ $(LIBS)"}' >> $@ -lpthread
 
-#取当前目录下的所有文件	      
-OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
-OBJS += $(patsubst %.c,%.o,$(wildcard *.c))
+DEPS = $(patsubst %, .%.d, $(EXES))
 
-#依赖项
-.SUFFIXES: .cpp .o .a
-
-#用g++编译文件
-%.o: %.cpp
-	$(CXX) -c $(CXXFLAGS) $(INCDIR) $< -o $@	
-
-LIBA= $(TARGET).a
-LIBSO=$(TARGET).so
-BIN=$(TARGET)
-
-#需要输出的文件类型
-TARGETS= $(BIN)
-
-#三种文件的编码方式
-CREATESO = $(LD)  $(LDFLAGS) -o $@ $^ $(LIBS)
-CREATEA = ar rc $(LIBA) $(OBJS) $(LIBS) 
-CREATEBIN=$(CXX) $^ -lpthread  $(LIBS) -o $@  
-	
-
-all:$(TARGETS)
-
-$(LIBSO):$(OBJS)  
-	$(CREATESO) 
-	@echo "----------so successed done!-----------------"
-$(LIBA):$(OBJS) 
-	$(CREATEA)
-	@echo "----------.a successed done!-----------------"
-$(BIN):$(OBJS)
-	$(CREATEBIN)
-	@echo "----------bin successed done!-----------------"
+-include $(DEPS)
 
 clean:
-	$(RM) *.o core *.log* $(TARGETS)
-depend:
-	makedepend $(CFLAGS) $(SRCS)
+	rm -f *.o .*.d *.log $(EXES)
