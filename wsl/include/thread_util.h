@@ -27,11 +27,11 @@ public:
 
 	Locker(T& obj):m_obj(obj)
 	{
-		m_obj.lock();
+		m_obj.Lock();
 	}
 	~Locker()
 	{
-		m_obj.lock();
+		m_obj.Unlock();
 	}
 };
 
@@ -121,7 +121,7 @@ public:
 
 	void Lock(const T& v)
 	{
-		return LockH(_hash(v))
+		return LockH(_hash(v));
 	}
 	
 	void UnLockH(const T& v)
