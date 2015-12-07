@@ -1,4 +1,10 @@
-
+/************************************************************************/
+/* filename:			 blocking_queue.h                                                                  */
+/* function:			阻塞方式的队列                                      */
+/* author :			wangchenglin                                                                  */
+/* creattime :       2015/12/04 下午                              */
+/* company :		YY                                                                               */
+/************************************************************************/
 #ifndef _WSL_BLOCKING_QUEUE_H_
 #define  _WSL_BLOCKING_QUEUE_H_
 
