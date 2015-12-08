@@ -107,7 +107,7 @@ namespace meta_detail
 	char is_reference_helper1(...);
 	
 	template<class T>
-	no_type is_reference_helper2(T&(*)(type2type<2>));
+	no_type is_reference_helper2(T&(*)(type2type<T>));
 	yes_type is_reference_helper2(...);
 
 }
@@ -116,9 +116,10 @@ template<typename T>
 struct is_reference_type
 {
 	enum{value = sizeof(meta_detail::is_reference_helper2(
-		meta_detail::is_reference_helper2(<type2type<T>()))) == sizeof(yes_type)
+		meta_detail::is_reference_helper1(type2type<T>()))) == sizeof(yes_type)
 	};
 };
+
 META_BOOL_TYPE_TRAITS_IMPL(is_reference_type, void, false)
 META_BOOL_TYPE_TRAITS_IMPL(is_reference_type, void const, false)
 META_BOOL_TYPE_TRAITS_IMPL(is_reference_type, void volatile, false)

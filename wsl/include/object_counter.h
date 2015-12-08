@@ -25,7 +25,7 @@ namespace wsl
 			Locker<MutexT> locker(_lock);
 			_count++;
 		}
-		~object_counter()
+		 ~object_counter()
 		{
 			Locker<MutexT> locker(_lock);
 			_count--;

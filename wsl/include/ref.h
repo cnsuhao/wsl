@@ -9,7 +9,7 @@
 
 #include "meta.h"
 
-namespace wbl
+namespace wsl
 {
 
 template<class T>
@@ -57,7 +57,7 @@ struct is_reference_wrapper
 	enum { value = (sizeof(ref_detail::is_reference_wrapper_test(type2type<T>())) == sizeof(yes_type)) };
 };
 
-} // namespace wbl
+} // namespace wsl
 
 #endif
 
