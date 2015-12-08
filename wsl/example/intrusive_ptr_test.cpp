@@ -47,6 +47,7 @@ int main(int argc, char ** argv)
 		cout << "TestCounter count: " << TestCounter::get_object_count()<<"  "<<p->get_ref_count() << endl;
 		cout << p << endl;
 	}
+	//TestCounter* p = new TestCounter("abcde");
 	cout << "TestCounter count: " << TestCounter::get_object_count() << endl;
 	return 0;
 }
