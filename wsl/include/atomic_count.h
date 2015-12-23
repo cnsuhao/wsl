@@ -24,6 +24,8 @@ namespace wsl
 #define ATOMIC_ADD_AND_FETCH(src_ptr, v)  __sync_add_and_fetch(src_ptr, v)
 #define ATOMIC_FETCH(src_ptr)             __sync_add_and_fetch(src_ptr, 0)
 #define ATOMIC_SET(src_ptr, v)            (void)__sync_bool_compare_and_swap(src_ptr, *(src_ptr), v)
+	
+	//gcc/g++支持的原子计数
 	class atomic_count_t
 	{
 		typedef volatile long atomic_t;
@@ -50,7 +52,7 @@ namespace wsl
 	private:
 		atomic_t atomic_num;
 	};
-	
+	//直接使用汇编的方式
 	class atomic_count
 	{
 	public:
