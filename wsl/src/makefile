@@ -10,13 +10,17 @@ CXXFLAGS = -fPIC -Wall -D_GNU_SOURCE  -g -DLINUX
 LD = g++
 LDFLAGS = -shared
 
-INCDIR=	  -I./  -I ../include/
-
+INCDIR=	  -I./ \
+		  -I /usr/local/mysql/include \
+		  -I../protocol/ \
+		  -I../include/ \
+		  
+#CFLAGS += $(INCDIR)
           
 LIBS =	
 
 #需要输出的文件名
-TARGET = wsl
+TARGET = wslib
 
 #取当前目录下的所有文件	      
 OBJS = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
