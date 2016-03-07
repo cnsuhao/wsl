@@ -15,6 +15,7 @@ namespace wsl
 		int listen_port(int port);
 		int start();
 		int stop();
+		void accept_handler(int fd,int mask,void* data);
 	private:
 		EventLoop *m_loop;
 		Socket m_socket;

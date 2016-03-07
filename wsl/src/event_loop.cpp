@@ -99,7 +99,7 @@ void EventLoop::stop()
 }
 
 //io event listener
-void EventLoop::addEventListener(int fd, int event, const IOHandler &cb, void *data)
+void EventLoop::createFileEvent(int fd, int event, const IOHandler &cb, void *data)
 {
 	if(fd < 0) return;
 	if(fd >= nSize) resize(fd);
@@ -118,7 +118,7 @@ void EventLoop::addEventListener(int fd, int event, const IOHandler &cb, void *d
 	return ;
 }
 
-void EventLoop::removeEventListener(int fd, int event)
+void EventLoop::removeFileEvent(int fd, int event)
 {
 	if(fd < 0) return;
 	if(fd >= nSize) return;
@@ -128,6 +128,13 @@ void EventLoop::removeEventListener(int fd, int event)
 
 	ev->mask = ev->mask & (~event);
 	pPoll->del(fd, event);
+}
+int EventLoop::getFileEvents( int fd) 
+{
+	if (fd >=nSize) return 0;
+	IOEvent *io = pEvents + fd;
+
+	return io->mask;
 }
 
 TimerId EventLoop::setTimer(unsigned int milliseconds, const TimerHandler &cb, void *data)
