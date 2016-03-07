@@ -16,4 +16,8 @@ public:
 	virtual ~Object(){}
 };
 
+#define WSL_BINDADDR_MAX 16
+
+
+
 #endif

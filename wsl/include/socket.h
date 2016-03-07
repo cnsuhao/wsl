@@ -12,6 +12,14 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <stdio.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <string.h>
+#include <netdb.h>
+#include <errno.h>
+#include <stdarg.h>
+#include <stdio.h>
 namespace wsl
 {
 #ifndef INVALID_SOCKET
@@ -29,11 +37,12 @@ namespace wsl
 		~Socket(){}
 	public:
 		int get_fd(){ return m_fd; }
-		int is_valid(){ return m_fd >= 0;}
+		bool is_valid(){ return m_fd > 0;}
 		int get_error(){ return m_error; }
 		int create(int domain);
 		int close();
 		int listen(struct sockaddr *sa, int len);
+		int listen( struct sockaddr *sa, socklen_t len, int backlog);
 		int accept(sockaddr *addr, int *len);
 		int connect_tcp(const char *host, short port, int isNonBlock = 0);
 		int connect_unix(const char *path, int isNonBlock = 0);
@@ -43,6 +52,8 @@ namespace wsl
 		int set_nonblock();
 		int set_nondelay();
 		int set_keepalive();
+		int create_socket(int port, char *bindaddr, int af, int backlog);
+		int v6_only();
 	private:
 		int m_fd;
 		int m_error;

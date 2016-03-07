@@ -98,16 +98,17 @@ public:
 public:
 	void 					run();
 	void 					stop();
-	void 					addEventListener(int fd, int event, const IOHandler &cb, void *data = NULL);
-	void 					removeEventListener(int fd, int event);
+	void 					createFileEvent(int fd, int event, const IOHandler &cb, void *data = NULL);
+	void 					removeFileEvent(int fd, int event);
+	int						getFileEvents( int fd);
 	TimerId 				setTimer(unsigned int millisecond, const TimerHandler &cb, void *data = NULL);
 	void 					stopTimer(TimerId id);
-	void					setLoopBefore(const EventHandler &cb, void *data){cbBefore = cb;pBeforeData = data;}
-	void					nextTick(const EventHandler &cb, void *data = NULL);
-	void					setMaxWaitTime(int millisecond){ nMaxWaitTime = millisecond;}
+	void						setLoopBefore(const EventHandler &cb, void *data){cbBefore = cb;pBeforeData = data;}
+	void						nextTick(const EventHandler &cb, void *data = NULL);
+	void						setMaxWaitTime(int millisecond){ nMaxWaitTime = millisecond;}
 private:
-	void					resize(int maxfd);
-	int 					procIoEvent();
+	void						resize(int maxfd);
+	int 						procIoEvent();
 	int		 				procTimerEvent();
 	int						procTickEvent();
 private:
