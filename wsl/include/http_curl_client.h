@@ -2,6 +2,7 @@
 #define _WSL_HTTP_CLIENT_H_
 #include <curl/curl.h>
 #include <string>
+//#include "../dep/json/json.h"
 using namespace std;
 
 namespace wsl
