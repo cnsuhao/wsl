@@ -14,11 +14,11 @@ INCDIR=	  -I./ \
 		  -I /usr/local/mysql/include \
 		  -I../protocol/ \
 		  -I../include/ \
-		  -I../dep/curl/
+		  -I../dep/curl/\
 		  
-#CFLAGS += $(INCDIR)
+CFLAGS += $(INCDIR)
           
-LIBS =	../dep/curl/libcurl.a
+LIBS =	../dep/curl/libcurl.a ../dep/json/libjson.a
 
 #需要输出的文件名
 TARGET = wslib
