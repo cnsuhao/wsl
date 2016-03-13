@@ -2,10 +2,10 @@
 #define _WSL_TASK_THREAD_H_
 
 #include "simple_thread.h"
+#include "blocking_queue.h"
 
 namespace wsl
 {
-	class Task;
 	class TaskThread:
 		public Runnable
 	{
@@ -14,7 +14,8 @@ namespace wsl
 		~TaskThread();
 		void run();
 	public:
-		std::queue<Task> & mTaskQueue;
+		//std::queue<Task> & mTaskQueue;
+		blocking_queue<TaskIf> task_queue;
 	};
 }
 #endif
