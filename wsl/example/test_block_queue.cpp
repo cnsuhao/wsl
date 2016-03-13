@@ -37,7 +37,12 @@ void Test::run()
 	cout<<"pop "<< q.pop()<<endl;
 
 }
-blocking_queue<int> gqueue;
+struct  testTask
+{
+	testTask(int i ):data(i){}
+	int data;
+};
+blocking_queue<testTask*> gqueue;
 class PushThread:public Runnable
 {
 public:
@@ -48,10 +53,10 @@ public:
 		int i=0;
 		while (1)
 		{
-			gqueue.push(i++);
-			usleep(1000*50);
+			testTask* tt = new testTask(i++);
+			gqueue.push(tt);
 			cout<<"PushThread size:  "<<gqueue.size()<<endl;
-			cout<<"PushThread data:  "<<i<<endl;
+			cout<<"PushThread data:  "<<tt->data<<endl;
 		}
 	}
 };
@@ -65,14 +70,15 @@ public:
 	{
 		while (1)
 		{
-			int data = gqueue.pop();
+			testTask* tt = gqueue.pop();
 			cout<<"PopThread size:    "<<gqueue.size()<<endl;
-			cout<<"PopThread data:   "<< data<<endl;
-			usleep(1000*50);
-
+			cout<<"PopThread data:   "<< tt->data<<endl;
+			delete tt;
+			tt=NULL;
 		}
 	}
 };
+
 int main()
 {
 //	Test tst;
@@ -85,5 +91,7 @@ int main()
 	popThread->start();
 	pthread_join(pushThread->get_thread(),NULL);
 	pthread_join(popThread->get_thread(),NULL);
+	TaskQueue tq;
+
 	return 0;
 }

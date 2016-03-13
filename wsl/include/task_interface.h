@@ -8,6 +8,9 @@
  *  For more information about command pattern, please visit:
  *  http://en.wikipedia.org/wiki/Command_pattern
  */
+namespace wsl
+{
+class TaskThread;
 class TaskIf
 {
 public:
@@ -26,9 +29,7 @@ public:
     TaskThread* thread_context,
     void*       app_context) = 0;
 
-  virtual void run(__VA_ARGS__)=0;
-
-  /**
+    /**
    * Release relative resource of this task
    * It's the User's responsibility to release
    * the resource
@@ -46,5 +47,6 @@ protected:
   TaskIf() { /* empty */ }
 
 };
+}
 
 #endif
