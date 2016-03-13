@@ -4,7 +4,6 @@ using namespace wsl;
 
 HttpClient::HttpClient()
 {
-
 }
 
 HttpClient::~HttpClient()
@@ -20,10 +19,11 @@ int HttpClient::write_data_callback(void* buffer,size_t size,size_t nmemb,void *
 	}
 	size_t buff_len  = size* nmemb;
 	str->append((char*)buffer,buff_len);
+	printf("data %s ,len: %d",str->c_str(),buff_len);
 	return buff_len;
 }
 
-int HttpClient::http_post(string url,string param,string resp)
+int HttpClient::http_post(string url,string param,string &resp)
 {
 	CURL *curl =NULL;
 	CURLcode res;
@@ -38,6 +38,7 @@ int HttpClient::http_post(string url,string param,string resp)
 	curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,&(HttpClient::write_data_callback)); //对返回的数据进行操作的函数地址
 	curl_easy_setopt(curl,CURLOPT_WRITEDATA,(void*)&resp); //这是write_data_callback的第四个参数值
 	curl_easy_setopt(curl,CURLOPT_POST,1); //设置问非0表示本次操作为post
+	curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,1); //设置为非0,响应头信息location
 
 	curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 3);  
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 3);  

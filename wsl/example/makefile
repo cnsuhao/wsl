@@ -2,11 +2,11 @@ CC = gcc
 CXX = g++ 
 CFLAGS = -g -Wall -O0
 
-INCLUDE	:= -I./ -I../include
+INCLUDE	:= -I./ -I../include -I../dep/curl
 
 EXES = $(shell ls *.cpp | awk -F. '{print $$1}')
 all : $(EXES)
-LIBS = -lpthread -lexpat -lz -pthread
+LIBS = -lpthread -lexpat -lz -pthread  ../src/wslib.a -lcurl ../dep/curl/libcurl.a
 
 .%.d: %.cpp
 	$(CC) $(INCLUDE) -MM $< > $@
