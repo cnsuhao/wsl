@@ -9,6 +9,11 @@ namespace wsl
         class HttpClient
         {
 		public:
+			static HttpClient& get_instance()
+			{
+				static HttpClient hclient;
+				return hclient;
+			}
 			static int write_data_callback(void* buffer,size_t size,size_t nmemb,void *stream);
 		public:
 			HttpClient();
@@ -20,7 +25,7 @@ namespace wsl
 			*@resp 输出参数,返回的内容
 			*@return 0: CURLE_OK, -1 fail other see https://curl.haxx.se/libcurl/c/libcurl-errors.html
 			*/
-			int http_post(const string url,string param,string resp);
+			int http_post(const string url,string param,string& resp);
 			/** 
 			* @brief HTTP GET请求 
 			* @param strUrl 输入参数,请求的Url地址,如:http://www.baidu.com 
