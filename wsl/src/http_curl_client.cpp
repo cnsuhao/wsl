@@ -19,7 +19,7 @@ int HttpClient::write_data_callback(void* buffer,size_t size,size_t nmemb,void *
 	}
 	size_t buff_len  = size* nmemb;
 	str->append((char*)buffer,buff_len);
-	printf("data %s ,len: %d",str->c_str(),buff_len);
+	//printf("data %s ,len: %d",str->c_str(),buff_len);
 	return buff_len;
 }
 
