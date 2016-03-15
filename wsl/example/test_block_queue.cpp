@@ -91,7 +91,6 @@ int main()
 	popThread->start();
 	pthread_join(pushThread->get_thread(),NULL);
 	pthread_join(popThread->get_thread(),NULL);
-	TaskQueue tq;
 
 	return 0;
 }
