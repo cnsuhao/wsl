@@ -16,7 +16,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <sys/syscall.h>  
+//#define gettid() syscall(__NR_gettid)  
+#include <linux/unistd.h>
+#include <unistd.h>
+#include <sys/syscall.h>
+#include <sys/types.h>
+#include <signal.h>
 
+
+class MThread;
 class Runnable
 {
 public:
@@ -41,11 +50,41 @@ public:
 	bool is_stop(){
 		return m_stop;
 	}
+	 /**
+     * 得到Runnable对象
+     * 
+     * @return Runnable
+     */
+    Runnable *getRunnable() {
+        return m_pRunnable;
+    }
 	
 	pthread_t get_thread(){return m_pthread;}
+
+	static void * thread_func(void*arg)
+	{
+		MThread *thread = (MThread*) arg;
+		thread->pid = gettid();
+
+		if (thread->getRunnable()) {
+			//thread->getRunnable()->run(thread, thread->getArgs());
+		}
+
+		return (void*) NULL;
+	}
+private:   
+    /**
+     * 得到tid号
+     */
+    #ifdef _syscall0
+    static _syscall0(pid_t,gettid)
+    #else
+    static pid_t gettid() { return static_cast<pid_t>(syscall(__NR_gettid));}
+    #endif
 private:
 	Runnable* m_pRunnable;
 	pthread_t m_pthread;
+	int		  pid;
 	bool      m_stop;         ///< tell the thread to stop, reserved for future extension
 
 	bool      alive_;        ///< if the thread is still alive?
