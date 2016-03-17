@@ -32,7 +32,7 @@ public:
 	Runnable();
 	virtual ~Runnable();
 
-	virtual void run() = 0;
+	virtual void run(MThread* pthread,void* args) = 0;
 
 };
 
@@ -63,15 +63,16 @@ public:
 
 	static void * thread_func(void*arg)
 	{
-		MThread *thread = (MThread*) arg;
-		thread->pid = gettid();
+		MThread *pthread = (MThread*) arg;
+		pthread->pid = gettid();
 
-		if (thread->getRunnable()) {
-			//thread->getRunnable()->run(thread, thread->getArgs());
+		if (pthread->getRunnable()) {
+			pthread->getRunnable()->run(pthread, pthread->getArgs());
 		}
 
 		return (void*) NULL;
 	}
+	void* get_args(){return args;}
 private:   
     /**
      * µÃµ½tidºÅ
@@ -90,6 +91,7 @@ private:
 	bool      alive_;        ///< if the thread is still alive?
 	
 	bool      release_;      ///< tell the thread to release thread class
+	void*	  m_args;
 };
 
 
