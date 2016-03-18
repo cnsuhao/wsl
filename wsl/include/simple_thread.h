@@ -40,9 +40,10 @@ class MThread
 {
 public:
 	MThread(Runnable* pRunnable);
+	MThread();
 	~MThread();
 
-	bool start();
+	bool start(Runnable* pRunnable,void * _args);
 	void stop();
 	void set_stop(){
 			m_stop=true;
@@ -67,12 +68,12 @@ public:
 		pthread->pid = gettid();
 
 		if (pthread->getRunnable()) {
-			pthread->getRunnable()->run(pthread, pthread->getArgs());
+			pthread->getRunnable()->run(pthread, pthread->get_args());
 		}
 
 		return (void*) NULL;
 	}
-	void* get_args(){return args;}
+	void* get_args(){return m_args;}
 private:   
     /**
      * µÃµ½tidºÅ

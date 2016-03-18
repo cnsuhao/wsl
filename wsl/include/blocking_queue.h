@@ -29,6 +29,7 @@ namespace wsl
 template<typename T,typename Sequence = std::deque<T> >
 class blocking_queue
 {
+#define  MAX_QUEUE_SIZE 20000
 	typedef std::queue<T,Sequence> QueueT;
 	QueueT m_queue;
 	mutable Mutex m_mutex;
@@ -42,7 +43,8 @@ public:
 	typedef const T& const_reference;
 	typedef typename QueueT::size_type size_type;
 
-	blocking_queue(){}
+	blocking_queue(){m_maxsize = MAX_QUEUE_SIZE;}
+	blocking_queue(size_t _size){m_maxsize = _size;}
 
 	template < typename FI >
 	blocking_queue(FI first, FI last)
@@ -55,7 +57,10 @@ public:
 	{
 		{
 			MutexLocker ml(m_mutex);
-			m_queue.push(e);
+			if (m_queue.size() < m_maxsize)
+			{
+				m_queue.push(e);
+			}
 		}
 		m_cond.Signal();	
 	}
@@ -164,7 +169,8 @@ public:
 		MutexLocker lock(m_mutex);
 		return m_queue.size();
 	}
-
+	private:
+		size_t m_maxsize;
 };
 
 

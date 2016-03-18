@@ -1,18 +1,21 @@
 #include "simple_thread.h"
 #include <assert.h>
 #include <exception>
-void* ThreadFun(void* lParam)
-{
-	Runnable* pRunnable = (Runnable*)lParam;
-	pRunnable->run();
-	return 0;
-}
+//void* ThreadFun(void* lParam)
+//{
+//	Runnable* pRunnable = (Runnable*)lParam;
+//	pRunnable->run();
+//	return 0;
+//}
 
 Runnable::Runnable()
 {
 }
 
 Runnable::~Runnable()
+{
+}
+MThread::MThread()
 {
 }
 
@@ -30,14 +33,16 @@ MThread::~MThread()
 	}
 }
 
-bool MThread::start()
+bool MThread::start(Runnable* _r,void * _args)
 {
+	m_pRunnable = _r;
+	m_args = _args;
 	if(0 == m_pRunnable)
 	{
 		return false;
 	}
 
-	if(pthread_create(&m_pthread, NULL, ThreadFun, (void*)m_pRunnable) != 0)
+	if(pthread_create(&m_pthread, NULL, MThread::thread_func, (void*)this) != 0)
 	{
 		perror("pthread_create");
 		return false;
