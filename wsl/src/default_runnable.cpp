@@ -25,16 +25,38 @@ void DefaultRunnable::set_thread_num(int num)
 	}
 	thread_num = num;
 }
-int start()
+int DefaultRunnable::start()
 {
-	return 0;
+	if (aThread != NULL || thread_num < 1) {
+		return 0;
+	}
+	aThread = new MThread[thread_num];
+	if (NULL == aThread)
+	{
+		return 0;
+	}
+	int i = 0;
+	for (; i<thread_num; i++)
+	{
+		if (!aThread[i].start(this, (void*)((long)i)))
+		{
+			return i;
+		}
+	}
+	return i;
 }
 
-void stop(){
-
+void DefaultRunnable::stop(){
+	m_stop = false;
 }
 
 	
-void wait(){
-
+void DefaultRunnable::wait(){
+	if (aThread != NULL)
+	{
+		for (int i=0; i<thread_num; i++)
+		{
+			aThread[i].join();
+		}
+	}
 }
