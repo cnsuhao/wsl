@@ -74,6 +74,18 @@ public:
 		return (void*) NULL;
 	}
 	void* get_args(){return m_args;}
+	int join()
+	{
+		int ret = -1;
+		if (m_pthread)
+		{
+			ret =  pthread_join(m_pthread,NULL);
+			m_pthread=0;
+			pid=0;
+		}
+
+		return ret;
+	}
 private:   
     /**
      * µÃµ½tidºÅ
