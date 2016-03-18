@@ -48,7 +48,7 @@ class PushThread:public Runnable
 public:
 	PushThread(){}
 	~PushThread(){}
-	void run()
+	void run(MThread* pthread,void *args)
 	{
 		int i=0;
 		while (1)
@@ -66,7 +66,7 @@ class PopThread:public Runnable
 public:
 	PopThread(){}
 	~PopThread(){}
-	void run()
+	void run(MThread* pthread,void *args)
 	{
 		while (1)
 		{
@@ -85,10 +85,10 @@ int main()
 	//tst.run();
 	PushThread pushT;
 	PopThread popT;
-	MThread *pushThread = new MThread(&pushT );
-	MThread *popThread = new MThread(&popT );
-	pushThread->start();
-	popThread->start();
+	MThread *pushThread = new MThread( );
+	MThread *popThread = new MThread( );
+	pushThread->start(&pushT,NULL);
+	popThread->start(&popT,NULL);
 	pthread_join(pushThread->get_thread(),NULL);
 	pthread_join(popThread->get_thread(),NULL);
 

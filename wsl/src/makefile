@@ -5,7 +5,7 @@ CC = gcc
 CFLAGS =  -Wall -g -fPIC -D_GNU_SOURCE -DLINUX
 #编译cpp文件的选项
 CXX = g++
-CXXFLAGS = -fPIC -Wall -D_GNU_SOURCE  -g -DLINUX 
+CXXFLAGS = -fPIC -Wall -D_GNU_SOURCE  -g -DLINUX  -Wno-deprecated
 #编译so的选项
 LD = g++
 LDFLAGS = -shared
