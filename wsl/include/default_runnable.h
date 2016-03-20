@@ -25,7 +25,6 @@ namespace wsl
 		 */
 		void wait();
 	protected:
-	private:
 		int thread_num;
 		MThread* aThread;
 		bool m_stop;

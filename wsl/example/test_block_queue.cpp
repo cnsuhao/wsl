@@ -78,12 +78,32 @@ public:
 		}
 	}
 };
-
+void * push_thread_func(void* )
+{
+	int i=0;
+	for (;;)
+	{
+		testTask* tt = new testTask(i++);
+		gqueue.push(tt);
+	}
+	
+}
+void * pop_thread_func(void* )
+{
+	int i=0;
+	for (;;)
+	{
+		testTask* tt = gqueue.pop();
+		//printf("pthread id [%u],num [%d]\n",pthread_self(),tt->data);	
+		delete tt;
+		tt=NULL;
+	}
+}
 int main()
 {
 //	Test tst;
 	//tst.run();
-	PushThread pushT;
+	/*PushThread pushT;
 	PopThread popT;
 	MThread *pushThread = new MThread( );
 	MThread *popThread = new MThread( );
@@ -91,6 +111,34 @@ int main()
 	popThread->start(&popT,NULL);
 	pthread_join(pushThread->get_thread(),NULL);
 	pthread_join(popThread->get_thread(),NULL);
-
+	*/
+#define  THREADNUM 1
+	int i;
+	pthread_t push_pthread[THREADNUM]={0};
+	for ( i =0 ; i<THREADNUM;i++)
+	{
+		if(pthread_create(&push_pthread[i], NULL, push_thread_func, NULL) != 0)
+		{
+			perror("push_thread_func pthread_create error");
+			return false;
+		}
+	}
+	pthread_t pop_pthread[THREADNUM]={0};
+	for ( i =0 ; i<THREADNUM;i++)
+	{
+		if(pthread_create(&pop_pthread[i], NULL, pop_thread_func, NULL) != 0)
+		{
+			perror("push_thread_func pthread_create error");
+			return false;
+		}
+	}
+	for (i=0;i<THREADNUM;i++)
+	{
+		pthread_join(pop_pthread[i],NULL);
+	}
+	for (i=0;i<THREADNUM;i++)
+	{
+		pthread_join(push_pthread[i],NULL);
+	}
 	return 0;
 }

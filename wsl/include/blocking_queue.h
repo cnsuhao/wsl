@@ -29,7 +29,7 @@ namespace wsl
 template<typename T,typename Sequence = std::deque<T> >
 class blocking_queue
 {
-#define  MAX_QUEUE_SIZE 20000
+	#define  MAX_QUEUE_SIZE 2000
 	typedef std::queue<T,Sequence> QueueT;
 	QueueT m_queue;
 	mutable Mutex m_mutex;
@@ -57,12 +57,13 @@ public:
 	{
 		{
 			MutexLocker ml(m_mutex);
-			if (m_queue.size() < m_maxsize)
+			//if (m_queue.size() < m_maxsize)
 			{
 				m_queue.push(e);
 			}
 		}
 		m_cond.Signal();	
+		//m_cond.Broadcast();
 	}
 
 	T pop()

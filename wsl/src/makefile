@@ -18,8 +18,8 @@ INCDIR=	  -I./ \
 		  
 CFLAGS += $(INCDIR)
           
-LIBS =	../dep/curl/libcurl.a ../dep/json/libjson.a
-
+SLIBS =	../dep/curl/libcurl.a ../dep/json/libjson.a 
+DLIBS = -lcurl
 #需要输出的文件名
 TARGET = wslib
 
@@ -39,12 +39,12 @@ LIBSO=$(TARGET).so
 BIN=$(TARGET)
 
 #需要输出的文件类型
-TARGETS= $(LIBA)
+TARGETS= $(BIN)
 
 #三种文件的编码方式
-CREATESO = $(LD)  $(LDFLAGS) -o $@ $^ $(LIBS)
-CREATEA = ar rc $(LIBA) $(OBJS) $(LIBS) 
-CREATEBIN=$(CXX) $^ -lpthread  $(LIBS) -o $@  
+CREATESO = $(LD)  $(LDFLAGS) -o $@ $^ $(SLIBS)
+CREATEA = ar rc $(LIBA) $(OBJS) $(SLIBS) 
+CREATEBIN=$(CXX) $^ -lpthread  $(SLIBS) $(DLIBS) -o $@  
 	
 
 all:$(TARGETS)

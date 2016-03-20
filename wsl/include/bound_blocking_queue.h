@@ -8,11 +8,19 @@
 using namespace std;
 namespace wsl
 {
+#define  BOUND_QUEUE_SIZE 2000
 	template <typename T>
 	class BoundedBlockingQueue 
 	{ 
 	public: 
 		BoundedBlockingQueue (int size) : maxSize(size) 
+		{ 
+			pthread_mutex_init(&_lock, NULL); 
+			pthread_cond_init(&_rcond, NULL);
+			pthread_cond_init(&_wcond, NULL);
+			_array.reserve(maxSize);
+		} 
+		BoundedBlockingQueue () : maxSize(BOUND_QUEUE_SIZE) 
 		{ 
 			pthread_mutex_init(&_lock, NULL); 
 			pthread_cond_init(&_rcond, NULL);
@@ -27,6 +35,7 @@ namespace wsl
 		} 
 		void push(const T& data);
 		T pop( ); 
+		size_t size(){return _array.size();}
 	private: 
 		vector<T> _array; // or T* _array if you so prefer
 		int maxSize;
