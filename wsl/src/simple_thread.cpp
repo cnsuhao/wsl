@@ -47,6 +47,7 @@ bool MThread::start(Runnable* _r,void * _args)
 		perror("pthread_create");
 		return false;
 	}
+	printf("thread start pthreadid [%u]\n",(unsigned int)m_pthread);
 	return true;
 }
 
