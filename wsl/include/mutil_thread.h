@@ -3,6 +3,9 @@
 #include "default_runnable.h"
 #include "blocking_queue.h"
 #include "bound_blocking_queue.h"
+#include <tr1/memory>
+using namespace std::tr1;
+
 namespace wsl
 {
 	class SimpleTaskIf
@@ -20,10 +23,13 @@ namespace wsl
 		~MutilThread();
 	public:
 		void push(SimpleTaskIf* ptask);
+		void push(shared_ptr<SimpleTaskIf> spTask);
 		void run(MThread* pthread,void* args);
 	private:
 		//blocking_queue<SimpleTaskIf* > taskQueue;
 		BoundedBlockingQueue<SimpleTaskIf*> taskQueue;
+		BoundedBlockingQueue<shared_ptr<SimpleTaskIf> > staskQueue;
+
 	};
 }
 #endif

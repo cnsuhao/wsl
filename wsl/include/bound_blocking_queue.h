@@ -45,16 +45,20 @@ namespace wsl
 	template <typename T>
 	void BoundedBlockingQueue <T>::push(const T& value ) 
 	{ 
-		pthread_mutex_lock(&_lock);
-		const bool was_empty = _array.empty( );
-		while (_array.size( ) == maxSize) 
-		{ 
-			pthread_cond_wait(&_wcond, &_lock);
-		} 
-		_array.push_back(value);
-		pthread_mutex_unlock(&_lock);
-		if (was_empty) 
-			pthread_cond_broadcast(&_rcond);
+		//if (_array.size( ) < maxSize)
+		{
+			pthread_mutex_lock(&_lock);
+			const bool was_empty = _array.empty( );
+			while (_array.size( ) == maxSize) 
+			{ 
+	 			pthread_cond_wait(&_wcond, &_lock);
+	 		} 
+			
+			_array.push_back(value);
+			pthread_mutex_unlock(&_lock);
+			if (was_empty) 
+				pthread_cond_broadcast(&_rcond);
+		}
 	}
 	template <typename T>
 	T BoundedBlockingQueue<T>::pop( ) 
